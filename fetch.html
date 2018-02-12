@@ -1,9 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
-	<script type="text/javascript" src="fetch.js"></script>
+	<title>User Strory</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+	<div id="outer-login"> 
+		<div id="inner-login">
+			Email: <input type="text" id="email" class="inp"><br><br>
+			Password: <input type="password" id="password" class="inp"><br><br>
+			User Story ID: <input type="text" id="uid" class="inp"><br><br>
+			<input type="submit" id="reset-btn" value="Reset">
+			<input type="submit" id="submit-btn">
+		</div>
+	</div>
+	<h1 id="outer-load">Loading...</h1>
+<div id="main-body">
+	<div id="outer-display">
+		<h3 id="user-story-name" style="display: inline">User Story Name:</h3> <span id="user-story-name-text">NAME</span><br><br>
+		<h3 id="user-story-description" style="display: inline">User Story Description: </h3> <span id="user-story-description-text">DESCRIPTION</span><br><br>
+		<h3 id="user-story-owner" style="display: inline">User Story Owner: </h3><span id="user-story-owner-text">OWNER</span><br><br>
+		<h3 id="user-story-tasks" style="display:inline">Total Tasks: </h3> <span id="user-story-tasks-text">0</span><br><br>
+	</div>
+	<div id="outer-tasks-table"> 
+		<table id="tasks-table">
+			<thead>
+				<tr>
+					<th id="task-id">Task ID</th>
+					<th id="task-name">Task Name</th>
+					<th id="task-description">Task Description</th>
+					<th id="task-state">Task State</th>
+				</tr>
+			</thead>
+			<tbody id="tasks-table-body">
+			<!-- <tr>
+				<td id="task-id">Task ID</td>
+				<td id="task-name">Task Name</td>
+				<td id="task-description">Task Description</td>
+				<td id="task-state">Task State</td>
+			</tr> -->
+			</tbody>
+		</table>
+	</div>
+</div><br><br>
+	<script type="text/javascript" src="script.js"></script>
 </body>
 </html>
