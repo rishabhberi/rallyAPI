@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+	<script type="text/javascript" src="authenticate.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body onload=init()>
+	<div id="div_form">
+		<form action="" method="post">
+			<input type="text" name="username" id="username" placeholder="Username" required>
+			<br>
+			<input type="password" name="password" id="password" placeholder="Password" required>
+			<br>
+			<input type="button" id="submit" value="Submit">
+			<input type="button" id="reset" value="Reset">
+		</form>
+	</div>
+	<span id="e1">Username cannot be empty!</span>
+	<span id="e2"">Password cannot be empty!</span>
+	<div id="main">
+		<div id="main_form">
+			<h1>Dashboard</h1>
+			<select id="dropDown">
+				<option value="User Story ID">User Story</option>
+				<option value="Iteration ID">Iteration Burndown Chart</option>
+			</select>
+			<input type="text" name="userStory" id="usid" placeholder="User Story ID">
+			<input type="submit" name="submit" id="fetch" value="Fetch Details">
+		</div>
+		<span id="e3">User Story ID cannot be empty!</span>
+		<hr>
+		<div id="main_data">
+			<div id="name">
+				<h2>User Story Name</h2>
+				<span id="name_val"></span>
+			</div>
+			<div id="owner">
+				<h2>Owner</h2>
+				<span id="owner_val"></span>
+			</div>
+			<div id="desc">
+				<h2>Description</h2>
+				<div id="desc_val"></div>
+			</div>
+			<div id="tasks">
+				<h2>Tasks<!--  - <strong id="taskCount"></strong> --></h2>
+				<div id="taskTable">
+					<table id="table"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="load">
+		<img src="" id="load_img" width="200px" height="200px">
+	</div>
+	<div id="iframeDiv">
+		<iframe src="" id="iframe" frameBorder="0"></iframe>
+	</div>
+</body>
+</html>

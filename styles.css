@@ -1,0 +1,119 @@
+html, body{
+	text-align: center;
+	height: 100%;
+	margin: 0;
+	overflow-x: hidden;
+}
+
+hr{
+	height: 2px;
+	background-color: black;
+}
+
+#div_form{
+	border: 2px solid red;
+	border-radius: 10px 10px 10px 10px;
+	width: 15%;
+	height: 25%;
+	text-align: center;
+	margin: auto;
+	margin-top: 1%;
+}
+
+#username{
+	margin-top: 10%;
+	text-align: center;
+	line-height: 2em;
+}
+
+#password{
+	margin-top: 5%;
+	margin-bottom: 15%;
+	text-align: center;
+	line-height: 2em;
+}
+
+#submit{
+	margin: auto;
+}
+
+#reset{
+	margin-left: 10%;
+}
+
+input[type=button],
+input[type=submit]{
+	width: 30%;
+	height: 2em;
+	background-color: black;
+	border: 1px solid white;
+	border-radius: 3px 3px 3px 3px;
+	color: white;
+}
+
+#e1, #e2, #e3{
+	color: red;
+}
+
+#main_form{
+	text-align: center;
+	margin: auto;
+	height: 40%;
+	width: 25%;
+	margin-bottom: 1%;
+}
+
+#usid{
+	text-align: center;
+	line-height: 2em;
+	margin-right: 2%;
+}
+
+#main{
+	width: 95%;
+	margin: auto;
+	margin-bottom: 2%;
+}
+
+#main_data{
+	border: 2px solid black;
+	text-align: left;
+	padding: 2%;
+}
+
+#name, #owner, #desc{
+	margin-bottom: 3%;
+}
+
+h2{
+	
+}
+
+table{
+	border-collapse: collapse;
+}
+
+td{
+	padding: 5px;
+}
+
+tr th{
+	text-align: center;
+}
+
+table, th, td{
+	border: 1px solid black;
+}
+
+iframe{
+	width: 70%;
+	height: 90%;
+	margin-top: 1.5%;
+}
+
+#iframeDiv{
+	border: 2px solid black;
+	width: 95%;
+	height: 70%;
+	margin: auto;
+}
