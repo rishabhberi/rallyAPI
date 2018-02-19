@@ -11,7 +11,7 @@ hr{
 }
 
 #div_form{
-	border: 2px solid red;
+	border: 2px solid black;
 	border-radius: 10px 10px 10px 10px;
 	width: 15%;
 	height: 25%;
@@ -114,6 +114,15 @@ iframe{
 #iframeDiv{
 	border: 2px solid black;
 	width: 95%;
-	height: 70%;
+	height: 60%;
 	margin: auto;
+}
+
+#fetch{
+	margin-top: 2%;
+}
+
+select{
+	margin-top: 2%;
+	margin-bottom: : 2%;
 }

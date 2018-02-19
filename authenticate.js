@@ -3,7 +3,7 @@ function createRequest(url, callback)
 	xhr = new XMLHttpRequest()
 	xhr.onreadystatechange = callback
 	xhr.withCredentials = true
-	xhr.open("GET", url, true)
+	xhr.open("GET", encodeURI(url), true)
 	xhr.setRequestHeader("Authorization", window.sessionStorage.hash)
 	xhr.send()
 }
@@ -40,6 +40,7 @@ function getToken()
 		}
 		else
 		{
+			load.style.display = "none"
 			alert("Please enter valid credentials!")
 			username.value = ""
 			password.value = ""
@@ -158,6 +159,61 @@ function displayDetails()
 	}
 }
 
+function getIterationID()
+{
+	if(xhr.readyState == 4 && xhr.status == 200)
+	{
+		data = JSON.parse(xhr.response)
+		console.log(data)
+		iterationURL = data.HierarchicalRequirement.Iteration._ref
+		iterationID = iterationURL.split('/')[-1]
+		url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID
+
+	}
+}
+
+function fetchIteration()
+{
+	if(xhr.readyState == 4 && xhr.status == 200)
+	{
+		data = JSON.parse(xhr.response)
+		console.log(data)
+		results = data.QueryResult.Results
+		iterationName = usid.value
+		iterationID = ""
+		for (var i = 0; i < results.length; i++)
+		{
+			console.log(results[i].Name)
+			if(results[i].Name == iterationName)
+			{
+				ref = results[i]._ref
+				temp = ref.split('/')
+				iterationID = temp[temp.length-1]
+				break
+			}
+		}
+		if(iterationID == "")
+		{
+			alert("No Details found for Iteration Name Entered!")
+			load.style.display = "none"
+			return
+		}
+		url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID + "&TITLE=Iteration+Burndown&SUBTITLE=" + teamName
+		createRequest(url, displayBurndown)
+	}
+}
+
+function fetchProject()
+{
+	if(xhr.readyState == 4 && xhr.status == 200)
+	{
+		data = JSON.parse(xhr.response)
+		console.log(data)
+		url = data.QueryResult.Results[0]._ref + "/Iterations?pagesize=200"
+		createRequest(url, fetchIteration)
+	}
+}
+
 function displayBurndown()
 {
 	if(xhr.readyState == 4 && xhr.status == 200)
@@ -179,15 +235,18 @@ function fetchDetails()
 	main_data.style.display = "none"
 	iframeDiv.style.display = "none"
 	load.style.display = "block"
-	if(dropDown.value == "User Dtory ID")
+	if(dropDown.value == "User Story ID")
 	{
-		urlgetID = 'https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(FormattedID%20%3D%20' + usid.value + ')&key=' + window.sessionStorage.securityToken
+		urlgetID = 'https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(FormattedID = ' + usid.value + ')&key=' + window.sessionStorage.securityToken
 		createRequest(urlgetID, displayDetails)
 	}
-	else if(dropDown.value == "Iteration ID")
+	else if(dropDown.value == "Iteration Name")
 	{
-		urlgetID = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + usid.value
-		createRequest(urlgetID, displayBurndown)
+		teamName = team.value
+		urlGetProject = "https://rally1.rallydev.com/slm/webservice/v2.0/project?query=(Name = \"" + teamName + "\")&key=" + window.sessionStorage.securityToken
+		// urlgetID = "https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(Iteration.Name = " + usid.value + ")"
+		// urlgetID = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + usid.value + '&key=' + window.sessionStorage.securityToken
+		createRequest(urlGetProject, fetchProject)
 	}
 }
 
@@ -195,6 +254,14 @@ function setRequestType()
 {
 	console.log(dropDown.value)
 	usid.placeholder = dropDown.value
+	if(dropDown.value == "Iteration Name")
+	{
+		teamDiv.style.display = "block"
+	}
+	else if(dropDown.value == "User Story ID")
+	{
+		teamDiv.style.display = "none"
+	}
 }
 
 function init()
@@ -253,7 +320,9 @@ function init()
 	iframe = document.getElementById("iframe")
 	iframeDiv = document.getElementById("iframeDiv")
 	iframeDiv.style.display = "none"
-}
 
-// https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=127017850756%2C127017852112%2C127017853684%2C127018766752
-// For Transformers, Strikers, Bullets, Odin
+	teamDiv = document.getElementById("teamDiv")
+	teamDiv.style.display = "none"
+
+	team = document.getElementById("team")
+}

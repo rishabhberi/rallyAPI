@@ -23,9 +23,19 @@
 			<h1>Dashboard</h1>
 			<select id="dropDown">
 				<option value="User Story ID">User Story</option>
-				<option value="Iteration ID">Iteration Burndown Chart</option>
+				<option value="Iteration Name">Iteration Burndown Chart</option>
 			</select>
 			<input type="text" name="userStory" id="usid" placeholder="User Story ID">
+			<br>
+			<div id="teamDiv">
+				<label>Team:&nbsp;&nbsp;</label>
+				<select id="team">
+					<option value="Interact Bullets">Interact Bullets</option>
+					<option value="Interact Strikers">Interact Strikers</option>
+					<option value="Interact Team Odin">Interact Team Odin</option>
+				</select>
+				<br>
+			</div>
 			<input type="submit" name="submit" id="fetch" value="Fetch Details">
 		</div>
 		<span id="e3">User Story ID cannot be empty!</span>
