@@ -203,14 +203,44 @@ function fetchIteration()
 	}
 }
 
+function fetchTeamMembers(){
+	if(xhr.readyState == 4 && xhr.status == 200)
+	{
+		data = JSON.parse(xhr.response)
+		console.log(data)
+		load.style.display = "none"
+		teamMembersDiv.style.display = "block"
+		//main_data.style.display = "block"
+		teamMembersList = document.getElementById("team_members_list")
+		team_members_list.innerHTML=""
+		details = data.QueryResult.Results
+		for(j = 0; j < details.length; j++)
+		{
+			member = document.createElement("li")
+			if(details[j].DisplayName!=null)
+				member.textContent = details[j].DisplayName
+			else
+				member.textContent = details[j]._refObjectName
+			console.log(member.textContent)
+			teamMembersList.appendChild(member)
+		}
+	}
+}
+
 function fetchProject()
 {
 	if(xhr.readyState == 4 && xhr.status == 200)
 	{
 		data = JSON.parse(xhr.response)
 		console.log(data)
-		url = data.QueryResult.Results[0]._ref + "/Iterations?pagesize=200"
-		createRequest(url, fetchIteration)
+		if(dropDown.value == "Iteration Name"){
+			url = data.QueryResult.Results[0]._ref + "/Iterations?pagesize=200"
+			createRequest(url, fetchIteration)
+		}
+		else{
+			url = data.QueryResult.Results[0]._ref + "/TeamMembers?pagesize=200"
+			createRequest(url, fetchTeamMembers)
+		}
 	}
 }
 
@@ -234,13 +264,14 @@ function fetchDetails()
 	}
 	main_data.style.display = "none"
 	iframeDiv.style.display = "none"
+	teamMembersDiv.style.display = "none"
 	load.style.display = "block"
 	if(dropDown.value == "User Story ID")
 	{
 		urlgetID = 'https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(FormattedID = ' + usid.value + ')&key=' + window.sessionStorage.securityToken
 		createRequest(urlgetID, displayDetails)
 	}
-	else if(dropDown.value == "Iteration Name")
+	else
 	{
 		teamName = team.value
 		urlGetProject = "https://rally1.rallydev.com/slm/webservice/v2.0/project?query=(Name = \"" + teamName + "\")&key=" + window.sessionStorage.securityToken
@@ -254,7 +285,7 @@ function setRequestType()
 {
 	console.log(dropDown.value)
 	usid.placeholder = dropDown.value
-	if(dropDown.value == "Iteration Name")
+	if(dropDown.value == "Iteration Name" || dropDown.value == "Team Members")
 	{
 		teamDiv.style.display = "block"
 	}
@@ -325,4 +356,7 @@ function init()
 	teamDiv.style.display = "none"
 
 	team = document.getElementById("team")
+
+	teamMembersDiv = document.getElementById("teamMembersDiv")	
+	teamMembersDiv.style.display = "none"
 }
