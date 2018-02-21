@@ -35,7 +35,7 @@ function getToken()
 			// window.sessionStorage.setItem("username", username.value)
 			// window.sessionStorage.setItem("password", password.value)
 			load.style.display = "none"
-			div_form.style.display = "none"
+			divForm.style.display = "none"
 			main.style.display = "block"
 		}
 		else
@@ -118,7 +118,7 @@ function getTaskDetails()
 			addTask([taskID, taskName, taskOwner, taskState])
 		}
 		load.style.display = "none"
-		main_data.style.display = "block"
+		userStoryData.style.display = "block"
 	}
 }
 
@@ -130,8 +130,8 @@ function getStoryDetails()
 		console.log(data)
 		storyDescription = data.HierarchicalRequirement.Description
 		storyOwner = data.HierarchicalRequirement.Owner._refObjectName
-		document.getElementById("desc_val").innerHTML = storyDescription
-		document.getElementById("owner_val").textContent = storyOwner
+		document.getElementById("descVal").innerHTML = storyDescription
+		document.getElementById("ownerVal").textContent = storyOwner
 		taskURL = data.HierarchicalRequirement.Tasks._ref
 		createRequest(taskURL, getTaskDetails)
 	}
@@ -152,8 +152,8 @@ function displayDetails()
 			}
 			storyURL = data.QueryResult.Results[0]._ref
 			storyName = data.QueryResult.Results[0]._refObjectName
-			// main_data.style.display = "block"
-			document.getElementById("name_val").textContent = storyName
+			// userStoryData.style.display = "block"
+			document.getElementById("nameVal").textContent = storyName
 			createRequest(storyURL, getStoryDetails)
 		}
 	}
@@ -178,28 +178,36 @@ function fetchIteration()
 	{
 		data = JSON.parse(xhr.response)
 		console.log(data)
-		results = data.QueryResult.Results
-		iterationName = usid.value
-		iterationID = ""
-		for (var i = 0; i < results.length; i++)
+		iterationResults = data.QueryResult.Results
+		// iterationName = usid.value
+		// iterationID = ""
+		for (var i = 0; i < iterationResults.length; i++)
 		{
-			console.log(results[i].Name)
-			if(results[i].Name == iterationName)
-			{
-				ref = results[i]._ref
-				temp = ref.split('/')
-				iterationID = temp[temp.length-1]
-				break
-			}
+			console.log(iterationResults[i].Name)
+			option = document.createElement("option")
+			ref = iterationResults[i]._ref
+			temp = ref.split('/')
+			option.value = temp[temp.length-1]
+			option.textContent = iterationResults[i].Name
+			iterations.appendChild(option)
+			// if(results[i].Name == iterationName)
+			// {
+			// 	ref = results[i]._ref
+			// 	temp = ref.split('/')
+			// 	iterationID = temp[temp.length-1]
+			// 	break
+			// }
+
 		}
-		if(iterationID == "")
-		{
-			alert("No Details found for Iteration Name Entered!")
-			load.style.display = "none"
-			return
-		}
-		url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID + "&TITLE=Iteration+Burndown&SUBTITLE=" + teamName
-		createRequest(url, displayBurndown)
+		load.style.display = "none"
+		// if(iterationID == "")
+		// {
+		// 	alert("No Details found for Iteration Name Entered!")
+		// 	load.style.display = "none"
+		// 	return
+		// }
+		// url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID + "&TITLE=Iteration+Burndown&SUBTITLE=" + teamName
+		// createRequest(url, displayBurndown)
 	}
 }
 
@@ -210,17 +218,15 @@ function fetchTeamMembers(){
 		console.log(data)
 		load.style.display = "none"
 		teamMembersDiv.style.display = "block"
-		//main_data.style.display = "block"
-		teamMembersList = document.getElementById("team_members_list")
-		team_members_list.innerHTML=""
+		teamMemberh2.textContent = team.value
+		//userStoryData.style.display = "block"
+		teamMembersList = document.getElementById("teamMembersList")
+		teamMembersList.innerHTML = ""
 		details = data.QueryResult.Results
 		for(j = 0; j < details.length; j++)
 		{
 			member = document.createElement("li")
-			if(details[j].DisplayName!=null)
-				member.textContent = details[j].DisplayName
-			else
-				member.textContent = details[j]._refObjectName
+			member.textContent = details[j]._refObjectName + " ( " + details[j].Role + " )"
 			console.log(member.textContent)
 			teamMembersList.appendChild(member)
 		}
@@ -233,12 +239,15 @@ function fetchProject()
 	{
 		data = JSON.parse(xhr.response)
 		console.log(data)
-		if(dropDown.value == "Iteration Name"){
-			url = data.QueryResult.Results[0]._ref + "/Iterations?pagesize=200"
+		projectURL = data.QueryResult.Results[0]._ref
+		if(dropDown.value == "Iteration Name")
+		{
+			url = projectURL + "/Iterations?pagesize=200"
 			createRequest(url, fetchIteration)
 		}
-		else{
-			url = data.QueryResult.Results[0]._ref + "/TeamMembers?pagesize=200"
+		else
+		{
+			url = projectURL + "/TeamMembers?pagesize=200"
 			createRequest(url, fetchTeamMembers)
 		}
 	}
@@ -262,41 +271,93 @@ function fetchDetails()
 		e3.style.display ="block"
 		return
 	}
-	main_data.style.display = "none"
-	iframeDiv.style.display = "none"
-	teamMembersDiv.style.display = "none"
 	load.style.display = "block"
-	if(dropDown.value == "User Story ID")
-	{
-		urlgetID = 'https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(FormattedID = ' + usid.value + ')&key=' + window.sessionStorage.securityToken
-		createRequest(urlgetID, displayDetails)
-	}
-	else
-	{
-		teamName = team.value
-		urlGetProject = "https://rally1.rallydev.com/slm/webservice/v2.0/project?query=(Name = \"" + teamName + "\")&key=" + window.sessionStorage.securityToken
-		// urlgetID = "https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(Iteration.Name = " + usid.value + ")"
-		// urlgetID = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + usid.value + '&key=' + window.sessionStorage.securityToken
-		createRequest(urlGetProject, fetchProject)
-	}
+	// if(dropDown.value == "User Story ID")
+	// {
+	urlgetID = 'https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(FormattedID = ' + usid.value + ')&key=' + window.sessionStorage.securityToken
+	createRequest(urlgetID, displayDetails)
+	// }
+	// else
+	// {
+	// 	teamName = team.value
+	// 	urlGetProject = "https://rally1.rallydev.com/slm/webservice/v2.0/project?query=(Name = \"" + teamName + "\")&key=" + window.sessionStorage.securityToken
+	// 	// urlgetID = "https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(Iteration.Name = " + usid.value + ")"
+	// 	// urlgetID = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + usid.value + '&key=' + window.sessionStorage.securityToken
+	// 	createRequest(urlGetProject, fetchProject)
+	// }
 }
 
 function setRequestType()
 {
 	console.log(dropDown.value)
+	usid.value = ""
 	usid.placeholder = dropDown.value
-	if(dropDown.value == "Iteration Name" || dropDown.value == "Team Members")
+	team.value = ""
+	userStoryData.style.display = "none"
+	iframeDiv.style.display = "none"
+	teamMembersDiv.style.display = "none"
+
+	if(dropDown.value == "Iteration Name")
 	{
 		teamDiv.style.display = "block"
+		iterationDiv.style.display = "block"
+		usid.style.display = "none"
+		fetch.style.display = "none"
+	}
+	else if(dropDown.value == "Team Members")
+	{
+		teamDiv.style.display = "block"
+		iterationDiv.style.display = "none"
+		usid.style.display = "none"
+		fetch.style.display = "none"
 	}
 	else if(dropDown.value == "User Story ID")
 	{
 		teamDiv.style.display = "none"
+		iterationDiv.style.display = "none"
+		usid.style.display = "inline"
+		fetch.style.display = "inline"
 	}
+}
+
+function fetchTeamDetails()
+{	
+	if(team.value == "")
+	{
+		return
+	}
+
+	userStoryData.style.display = "none"
+	iframeDiv.style.display = "none"
+	teamMembersDiv.style.display = "none"
+	load.style.display = "block"
+
+	iterations.innerHTML = "<option value=\"\"></option>"
+
+	teamName = team.value
+	urlGetProject = "https://rally1.rallydev.com/slm/webservice/v2.0/project?query=(Name = \"" + teamName + "\")&key=" + window.sessionStorage.securityToken
+	createRequest(urlGetProject, fetchProject)
+}
+
+function fetchBurndown()
+{
+	if(iterations.value == "")
+	{
+		return
+	}
+
+	load.style.display = "block"
+	iframeDiv.style.display = "none"
+	iterationID = iterations.value
+	teamName = team.value
+	url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID + "&TITLE=Iteration+Burndown&SUBTITLE=" + teamName
+	createRequest(url, displayBurndown)
 }
 
 function init()
 {
+	document.body.style.display = "block"
+
 	e1 = document.getElementById("e1")
 	e2 = document.getElementById("e2")
 	e3 = document.getElementById("e3")
@@ -318,10 +379,10 @@ function init()
 	load = document.getElementById("load")
 	load.style.display = "none"
 
-	document.getElementById("load_img").src = "tenor.gif"
+	document.getElementById("loadImg").src = "tenor.gif"
 
-	div_form = document.getElementById("div_form")
-	div_form.style.display = "none"
+	divForm = document.getElementById("divForm")
+	divForm.style.display = "none"
 
 	main = document.getElementById("main")
 	main.style.display = "none"
@@ -336,7 +397,7 @@ function init()
 	}
 	else
 	{
-		div_form.style.display = "block"
+		divForm.style.display = "block"
 	}
 
 	usid = document.getElementById("usid")
@@ -345,8 +406,8 @@ function init()
 	fetch = document.getElementById("fetch")
 	fetch.onclick = fetchDetails
 
-	main_data = document.getElementById("main_data")
-	main_data.style.display = "none"
+	userStoryData = document.getElementById("userStoryData")
+	userStoryData.style.display = "none"
 
 	iframe = document.getElementById("iframe")
 	iframeDiv = document.getElementById("iframeDiv")
@@ -356,7 +417,16 @@ function init()
 	teamDiv.style.display = "none"
 
 	team = document.getElementById("team")
+	team.onchange = fetchTeamDetails
 
 	teamMembersDiv = document.getElementById("teamMembersDiv")	
 	teamMembersDiv.style.display = "none"
+
+	iterationDiv = document.getElementById("iterationDiv")
+	iterationDiv.style.display = "none"
+
+	iterations = document.getElementById("iterations")
+	iterations.onchange = fetchBurndown
+
+	teamMemberh2 = document.getElementById("teamMemberh2")
 }

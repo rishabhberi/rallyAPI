@@ -5,12 +5,16 @@ html, body{
 	overflow-x: hidden;
 }
 
+body{
+	display: none;
+}
+
 hr{
 	height: 2px;
 	background-color: black;
 }
 
-#div_form{
+#divForm{
 	border: 2px solid black;
 	border-radius: 10px 10px 10px 10px;
 	width: 15%;
@@ -55,7 +59,7 @@ input[type=submit]{
 	color: red;
 }
 
-#main_form{
+#mainForm{
 	text-align: center;
 	margin: auto;
 	height: 40%;
@@ -75,10 +79,12 @@ input[type=submit]{
 	margin-bottom: 2%;
 }
 
-#main_data{
+#userStoryData{
 	border: 2px solid black;
 	text-align: left;
 	padding: 2%;
+	margin: auto;
+	width: 90%;
 }
 
 #name, #owner, #desc{
@@ -125,6 +131,9 @@ iframe{
 select{
 	margin-top: 2%;
 	margin-bottom: : 2%;
+	font-weight: bolder;
+	padding: 3px;
+	border: 1px solid black;
 }
 
  #teamMembersDiv{
@@ -133,4 +142,8 @@ select{
 	padding: 2%;
 	width: 91%;
 	margin: auto;
+}
+
+label{
+	font-weight: bolder;
 }

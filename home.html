@@ -6,7 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body onload=init()>
-	<div id="div_form">
+	<div id="divForm">
 		<form action="" method="post">
 			<input type="text" name="username" id="username" placeholder="Username" required>
 			<br>
@@ -17,9 +17,9 @@
 		</form>
 	</div>
 	<span id="e1">Username cannot be empty!</span>
-	<span id="e2"">Password cannot be empty!</span>
+	<span id="e2">Password cannot be empty!</span>
 	<div id="main">
-		<div id="main_form">
+		<div id="mainForm">
 			<h1>Dashboard</h1>
 			<select id="dropDown">
 				<option value="User Story ID">User Story</option>
@@ -27,52 +27,57 @@
 				<option value="Team Members">Team Members</option>
 			</select>
 			<input type="text" name="userStory" id="usid" placeholder="User Story ID">
-			<br>
 			<div id="teamDiv">
 				<label>Team:&nbsp;&nbsp;</label>
 				<select id="team">
+					<option value=""></option>
 					<option value="Interact Bullets">Interact Bullets</option>
 					<option value="Interact Strikers">Interact Strikers</option>
 					<option value="Interact Team Odin">Interact Team Odin</option>
 				</select>
 				<br>
 			</div>
+			<div id="iterationDiv">
+				<label>Iteration Name:&nbsp;&nbsp;</label>
+				<select id="iterations">
+					<option value=""></option>
+				</select>	
+				<br>			
+			</div>
 			<input type="submit" name="submit" id="fetch" value="Fetch Details">
 		</div>
 		<span id="e3">User Story ID cannot be empty!</span>
 		<hr>
-		<div id="main_data">
-			<div id="name">
-				<h2>User Story Name</h2>
-				<span id="name_val"></span>
-			</div>
-			<div id="owner">
-				<h2>Owner</h2>
-				<span id="owner_val"></span>
-			</div>
-			<div id="desc">
-				<h2>Description</h2>
-				<div id="desc_val"></div>
-			</div>
-			<div id="tasks">
-				<h2>Tasks<!--  - <strong id="taskCount"></strong> --></h2>
-				<div id="taskTable">
-					<table id="table"></table>
-				</div>
-			</div>
-		
+	</div>
+	<div id="userStoryData">
+		<div id="name">
+			<h2>User Story Name</h2>
+			<span id="nameVal"></span>
 		</div>
+		<div id="owner">
+			<h2>Owner</h2>
+			<span id="ownerVal"></span>
+		</div>
+		<div id="desc">
+			<h2>Description</h2>
+			<div id="descVal"></div>
+		</div>
+		<div id="tasks">
+			<h2>Tasks<!--  - <strong id="taskCount"></strong> --></h2>
+			<div id="taskTable">
+				<table id="table"></table>
+			</div>
+		</div>	
 	</div>
 	<div id="load">
-		<img src="" id="load_img" width="200px" height="200px">
+		<img src="" id="loadImg" width="200px" height="200px">
 	</div>
 	<div id="iframeDiv">
 		<iframe src="" id="iframe" frameBorder="0"></iframe>
 	</div>
-		<div id="teamMembersDiv">
-				<h2>Team Members</h2>
-				<ol id="team_members_list">
-				</ol>
-			</div>
+	<div id="teamMembersDiv">
+		<h2 id="teamMemberh2">Team Members</h2>
+		<ol id="teamMembersList"></ol>
+	</div>
 </body>
 </html>
