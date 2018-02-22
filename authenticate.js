@@ -29,11 +29,10 @@ function getToken()
 	{
 		if(xhr.status==200)
 		{
-			console.log(xhr.response)
-			securityToken = JSON.parse(xhr.response).OperationResult.SecurityToken
-			window.sessionStorage.setItem("securityToken", securityToken)
-			// window.sessionStorage.setItem("username", username.value)
-			// window.sessionStorage.setItem("password", password.value)
+			data = JSON.parse(xhr.response)
+			console.log("Security Token Generated")
+			console.log(data)
+			securityToken = data.OperationResult.SecurityToken
 			load.style.display = "none"
 			divForm.style.display = "none"
 			main.style.display = "block"
@@ -101,9 +100,9 @@ function getTaskDetails()
 	if(xhr.readyState == 4 && xhr.status == 200)
 	{
 		data = JSON.parse(xhr.response)
+		console.log("Tasks for User Story Fetched")
 		console.log(data)
 		taskCount = data.QueryResult.TotalResultCount
-		// document.getElementById("taskCount").textContent = taskCount
 
 		tasks = data.QueryResult.Results
 		table = document.getElementById("table")
@@ -127,6 +126,7 @@ function getStoryDetails()
 	if(xhr.readyState == 4 && xhr.status == 200)
 	{
 		data = JSON.parse(xhr.response)
+		console.log("User Story Details Fetched")
 		console.log(data)
 		storyDescription = data.HierarchicalRequirement.Description
 		storyOwner = data.HierarchicalRequirement.Owner._refObjectName
@@ -143,11 +143,13 @@ function displayDetails()
 	{
 		if(xhr.status == 200)
 		{
-			console.log(xhr.response)
 			data = JSON.parse(xhr.response)
+			console.log("User Story ID Fetched")
+			console.log(data)
 			if(data.QueryResult.TotalResultCount == 0)
 			{
 				alert("No Details Found For User Story Entered")
+				load.style.display = "none"
 				return
 			}
 			storyURL = data.QueryResult.Results[0]._ref
@@ -159,75 +161,57 @@ function displayDetails()
 	}
 }
 
-function getIterationID()
-{
-	if(xhr.readyState == 4 && xhr.status == 200)
-	{
-		data = JSON.parse(xhr.response)
-		console.log(data)
-		iterationURL = data.HierarchicalRequirement.Iteration._ref
-		iterationID = iterationURL.split('/')[-1]
-		url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID
+// function getIterationID()
+// {
+// 	if(xhr.readyState == 4 && xhr.status == 200)
+// 	{
+// 		data = JSON.parse(xhr.response)
+// 		console.log(data)
+// 		iterationURL = data.HierarchicalRequirement.Iteration._ref
+// 		iterationID = iterationURL.split('/')[-1]
+// 		url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID
 
-	}
-}
+// 	}
+// }
 
 function fetchIteration()
 {
 	if(xhr.readyState == 4 && xhr.status == 200)
 	{
 		data = JSON.parse(xhr.response)
+		console.log("Iterations for Team Fetched")
 		console.log(data)
 		iterationResults = data.QueryResult.Results
-		// iterationName = usid.value
-		// iterationID = ""
 		for (var i = 0; i < iterationResults.length; i++)
 		{
-			console.log(iterationResults[i].Name)
 			option = document.createElement("option")
 			ref = iterationResults[i]._ref
 			temp = ref.split('/')
 			option.value = temp[temp.length-1]
 			option.textContent = iterationResults[i].Name
 			iterations.appendChild(option)
-			// if(results[i].Name == iterationName)
-			// {
-			// 	ref = results[i]._ref
-			// 	temp = ref.split('/')
-			// 	iterationID = temp[temp.length-1]
-			// 	break
-			// }
-
 		}
 		load.style.display = "none"
-		// if(iterationID == "")
-		// {
-		// 	alert("No Details found for Iteration Name Entered!")
-		// 	load.style.display = "none"
-		// 	return
-		// }
-		// url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID + "&TITLE=Iteration+Burndown&SUBTITLE=" + teamName
-		// createRequest(url, displayBurndown)
 	}
 }
 
-function fetchTeamMembers(){
+function fetchTeamMembers()
+{
 	if(xhr.readyState == 4 && xhr.status == 200)
 	{
 		data = JSON.parse(xhr.response)
+		console.log("Team Members Fetched")
 		console.log(data)
 		load.style.display = "none"
 		teamMembersDiv.style.display = "block"
 		teamMemberh2.textContent = team.value
-		//userStoryData.style.display = "block"
 		teamMembersList = document.getElementById("teamMembersList")
 		teamMembersList.innerHTML = ""
 		details = data.QueryResult.Results
 		for(j = 0; j < details.length; j++)
 		{
 			member = document.createElement("li")
-			member.textContent = details[j]._refObjectName + " ( " + details[j].Role + " )"
-			console.log(member.textContent)
+			member.textContent = details[j]._refObjectName + " (" + details[j].Role + ")"
 			teamMembersList.appendChild(member)
 		}
 	}
@@ -238,6 +222,7 @@ function fetchProject()
 	if(xhr.readyState == 4 && xhr.status == 200)
 	{
 		data = JSON.parse(xhr.response)
+		console.log("Team ID Fetched")
 		console.log(data)
 		projectURL = data.QueryResult.Results[0]._ref
 		if(dropDown.value == "Iteration Name")
@@ -257,7 +242,9 @@ function displayBurndown()
 {
 	if(xhr.readyState == 4 && xhr.status == 200)
 	{
-		console.log(xhr.response)
+		parser = new DOMParser()
+		console.log("Burndown Chart Fetched")
+		console.log(parser.parseFromString(xhr.response, "text/xml"))
 		iframe.srcdoc = xhr.response
 		load.style.display = "none"
 		iframeDiv.style.display = "block"
@@ -272,30 +259,20 @@ function fetchDetails()
 		return
 	}
 	load.style.display = "block"
-	// if(dropDown.value == "User Story ID")
-	// {
+	userStoryData.style.display = "none"
 	urlgetID = 'https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(FormattedID = ' + usid.value + ')&key=' + window.sessionStorage.securityToken
 	createRequest(urlgetID, displayDetails)
-	// }
-	// else
-	// {
-	// 	teamName = team.value
-	// 	urlGetProject = "https://rally1.rallydev.com/slm/webservice/v2.0/project?query=(Name = \"" + teamName + "\")&key=" + window.sessionStorage.securityToken
-	// 	// urlgetID = "https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(Iteration.Name = " + usid.value + ")"
-	// 	// urlgetID = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + usid.value + '&key=' + window.sessionStorage.securityToken
-	// 	createRequest(urlGetProject, fetchProject)
-	// }
 }
 
 function setRequestType()
 {
-	console.log(dropDown.value)
 	usid.value = ""
 	usid.placeholder = dropDown.value
 	team.value = ""
 	userStoryData.style.display = "none"
 	iframeDiv.style.display = "none"
 	teamMembersDiv.style.display = "none"
+	e3.style.display = "none"
 
 	if(dropDown.value == "Iteration Name")
 	{
