@@ -32,7 +32,7 @@ function getToken()
 			data = JSON.parse(xhr.response)
 			console.log("Security Token Generated")
 			console.log(data)
-			securityToken = data.OperationResult.SecurityToken
+			window.sessionStorage.securityToken = data.OperationResult.SecurityToken
 			load.style.display = "none"
 			divForm.style.display = "none"
 			main.style.display = "block"
