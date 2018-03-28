@@ -63,11 +63,11 @@ input[type=submit]{
 	text-align: center;
 	margin: auto;
 	height: 40%;
-	width: 25%;
+	/*width: 25%;*/
 	margin-bottom: 1%;
 }
 
-#usid{
+#inputField{
 	text-align: center;
 	line-height: 2em;
 	margin-right: 2%;
@@ -91,10 +91,6 @@ input[type=submit]{
 	margin-bottom: 3%;
 }
 
-h2{
-	
-}
-
 table{
 	border-collapse: collapse;
 }
@@ -104,7 +100,12 @@ td{
 }
 
 tr th{
-	text-align: center;
+	text-align: left;
+	padding-left: 1%;
+}
+
+tr td{
+	padding-left: 1%;
 }
 
 table, th, td{
@@ -126,6 +127,7 @@ iframe{
 
 #fetch{
 	margin-top: 2%;
+	width: 10%;
 }
 
 select{
@@ -136,7 +138,7 @@ select{
 	border: 1px solid black;
 }
 
- #teamMembersDiv{
+#teamMembersDiv{
 	border: 2px solid black;
 	text-align: left;
 	padding: 2%;

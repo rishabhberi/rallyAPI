@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+	<script type="text/javascript" src="jira.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="stylesheet" type="text/css" href="jira.css">
+</head>
+<body onload=init()>
+	<div id="divForm">
+		<form action="" method="post">
+			<input type="text" name="username" id="username" placeholder="Username" required>
+			<br>
+			<input type="password" name="password" id="password" placeholder="Password" required>
+			<br>
+			<input type="button" id="submit" value="Submit">
+			<input type="button" id="reset" value="Reset">
+		</form>
+	</div>
+	<span id="e1">Username cannot be empty!</span>
+	<span id="e2">Password cannot be empty!</span>
+	<div id="main">
+		<div id="mainForm">
+			<h1>Dashboard</h1>
+			<select id="dropDown">
+				<option value="JIRA ID">Display Issue Details</option>
+				<option value="Project Specific Issues">Project Specific Issues</option>
+				<!-- <option value="Team Members">Team Members</option> -->
+			</select>
+			<input type="text" name="jira" id="inputField" placeholder="JIRA ID">
+			<br>
+			<div id="projectIssues">
+				<div id="projectDiv">
+					<label>Project:&nbsp;&nbsp;</label>
+					<select id="projectSelect">
+						<option value=""></option>
+					</select>					
+				</div>
+				<div id="priorityDiv">
+					<label>Priority:&nbsp;&nbsp;</label>
+					<select id="prioritySelect">
+						<option value=""></option>
+					</select>					
+				</div>
+				<div id="statusDiv">
+					<label>Status:&nbsp;&nbsp;</label>
+					<select id="statusSelect">
+						<option value=""></option>
+					</select>					
+				</div>
+			</div>
+			<!-- <div id="iterationDiv">
+				<label>Iteration Number:&nbsp;&nbsp;</label>
+				<select id="iterations">
+					<option value=""></option>
+				</select>	
+				<br>			
+			</div> -->
+			<input type="submit" name="submit" id="fetch" value="Fetch Details">
+		</div>
+		<span id="e3">JIRA ID cannot be empty!</span>
+		<!-- <br> -->
+		<hr>
+	</div>
+	<div id="jiraData">
+		<div id="details">
+			<h2>Details</h2>
+			<table id="tableDetails">
+				<col width="20%">
+				<col width="80%">
+				<tr>
+					<th>JIRA ID</th>
+					<td id="jiraKey"></td>
+				</tr>
+				<tr>
+					<th>Project</th>
+					<td id="project"></td>
+				</tr>
+				<tr>
+					<th>JIRA Name</th>
+					<td id="jiraName"></td>
+				</tr>
+				<tr>
+					<th>Issue Type</th>
+					<td id="jiraType"></td>
+				</tr>
+				<tr>
+					<th>Priority</th>
+					<td id="priority"></td>
+				</tr>
+				<tr>
+					<th>Status</th>
+					<td id="status"></td>
+				</tr>
+				<tr>
+					<th>Assignee</th>
+					<td id="assignee"></td>
+				</tr>
+				<tr>
+					<th>Creator</th>
+					<td id="creator"></td>
+				</tr>
+				<tr>
+					<th>Reporter</th>
+					<td id="reporter"></td>
+				</tr>
+				<tr>
+					<th>Versions</th>
+					<td id="versions"></td>
+				</tr>
+			</table>
+		</div>
+		<div id="desc">
+			<h2>Description</h2>
+			<div id="descVal"></div>
+		</div>
+		<div id="comments">
+			<h2>Comments</h2>
+			<table id="tableComments">
+				<col width="15%">
+				<col width="85%">
+				<thead>
+					<tr>
+						<th>Author</th>
+						<th>Comment</th>
+					</tr>
+				</thead>
+				<tbody id="commentsData"></tbody>
+			</table>
+		</div>
+		<div id="attachments">
+			<img src="attachment.png" width="20px" height="20px"><h2 style="display: inline;">Attachments</h2><br><br>
+			<table id="tableAttachments">
+				<col width="30%">
+				<col width="70%">
+				<thead>
+					<tr>
+						<th>Author</th>
+						<th>Attachment</th>
+					</tr>
+				</thead>
+				<tbody id="attachmentsData"></tbody>
+			</table>
+		</div>
+	</div>
+	<div id="load">
+		<img src="" id="loadImg" width="200px" height="200px">
+	</div>
+	<div id="issueTableDiv">
+		<table id="tableIssues">
+			<col width="5%">
+			<col width="10%">
+			<col width="50%">
+			<col width="15%">
+			<col width="10%">
+			<col width="10%">
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>JIRA ID</th>
+					<th>Name</th>
+					<th>Project</th>
+					<th>Priority</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody id="issueTableData"></tbody>
+		</table>		
+	</div>
+</body>
+</html>

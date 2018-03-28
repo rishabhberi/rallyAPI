@@ -253,21 +253,21 @@ function displayBurndown()
 
 function fetchDetails()
 {
-	if(usid.value == "")
+	if(inputField.value == "")
 	{
 		e3.style.display ="block"
 		return
 	}
 	load.style.display = "block"
 	userStoryData.style.display = "none"
-	urlgetID = 'https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(FormattedID = ' + usid.value + ')&key=' + window.sessionStorage.securityToken
+	urlgetID = 'https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement?query=(FormattedID = ' + inputField.value + ')&key=' + window.sessionStorage.securityToken
 	createRequest(urlgetID, displayDetails)
 }
 
 function setRequestType()
 {
-	usid.value = ""
-	usid.placeholder = dropDown.value
+	inputField.value = ""
+	inputField.placeholder = dropDown.value
 	team.value = ""
 	userStoryData.style.display = "none"
 	iframeDiv.style.display = "none"
@@ -278,21 +278,21 @@ function setRequestType()
 	{
 		teamDiv.style.display = "block"
 		iterationDiv.style.display = "block"
-		usid.style.display = "none"
+		inputField.style.display = "none"
 		fetch.style.display = "none"
 	}
 	else if(dropDown.value == "Team Members")
 	{
 		teamDiv.style.display = "block"
 		iterationDiv.style.display = "none"
-		usid.style.display = "none"
+		inputField.style.display = "none"
 		fetch.style.display = "none"
 	}
 	else if(dropDown.value == "User Story ID")
 	{
 		teamDiv.style.display = "none"
 		iterationDiv.style.display = "none"
-		usid.style.display = "inline"
+		inputField.style.display = "inline"
 		fetch.style.display = "inline"
 	}
 }
@@ -377,8 +377,8 @@ function init()
 		divForm.style.display = "block"
 	}
 
-	usid = document.getElementById("usid")
-	usid.onfocus = removeError
+	inputField = document.getElementById("inputField")
+	inputField.onfocus = removeError
 
 	fetch = document.getElementById("fetch")
 	fetch.onclick = fetchDetails
