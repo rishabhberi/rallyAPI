@@ -25,8 +25,10 @@
 				<option value="User Story ID">User Story</option>
 				<option value="Iteration Name">Iteration Burndown Chart</option>
 				<option value="Team Members">Team Members</option>
+				<option value="Releases">Releases</option>
 			</select>
 			<input type="text" name="userStory" id="inputField" placeholder="User Story ID">
+			<br>
 			<div id="teamDiv">
 				<label>Team:&nbsp;&nbsp;</label>
 				<select id="team">
@@ -36,11 +38,17 @@
 					<option value="Interact Strikers">Interact Strikers</option>
 					<option value="Interact Team Odin">Interact Team Odin</option>
 				</select>
-				<br>
 			</div>
 			<div id="iterationDiv">
 				<label>Iteration Number:&nbsp;&nbsp;</label>
 				<select id="iterations">
+					<option value=""></option>
+				</select>	
+				<br>			
+			</div>
+			<div id="releaseDiv">
+				<label>Release:&nbsp;&nbsp;</label>
+				<select id="releases">
 					<option value=""></option>
 				</select>	
 				<br>			
@@ -79,6 +87,53 @@
 	<div id="teamMembersDiv">
 		<h2 id="teamMemberh2">Team Members</h2>
 		<ol id="teamMembersList"></ol>
+	</div>
+	<div id="releaseDataDiv">		
+		<h2>Details</h2>
+		<table id="tableDetails">
+			<col width="30%">
+			<col width="70%">
+			<tr>
+				<th>Release Name</th>
+				<td id="releaseName"></td>
+			</tr>
+			<tr>
+				<th>Team</th>
+				<td id="releaseTeam"></td>
+			</tr>
+			<tr>
+				<th>Creation Date</th>
+				<td id="releaseCreationDate"></td>
+			</tr>
+			<tr>
+				<th>Release Start Date</th>
+				<td id="releaseStartDate"></td>
+			</tr>
+			<tr>
+				<th>Release End Date</th>
+				<td id="releaseEndDate"></td>
+			</tr>
+			<tr>
+				<th>Release State</th>
+				<td id="releaseState"></td>
+			</tr>
+			<tr>
+				<th>Plan Estimate</th>
+				<td id="releasePlanEstimate"></td>
+			</tr>
+			<tr>
+				<th>Accepted</th>
+				<td id="releaseAccepted"></td>
+			</tr>
+			<tr>
+				<th>Task Estimate Total</th>
+				<td id="releaseTaskEstimateTotal"></td>
+			</tr>
+			<tr>
+				<th>Task Remaining Total</th>
+				<td id="releaseTaskRemainingTotal"></td>
+			</tr>
+		</table>
 	</div>
 </body>
 </html>

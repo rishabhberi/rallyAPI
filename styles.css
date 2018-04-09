@@ -79,7 +79,7 @@ input[type=submit]{
 	margin-bottom: 2%;
 }
 
-#userStoryData{
+#userStoryData, #releaseDataDiv{
 	border: 2px solid black;
 	text-align: left;
 	padding: 2%;
@@ -148,4 +148,8 @@ select{
 
 label{
 	font-weight: bolder;
+}
+
+#tableDetails{
+	width: 60%;
 }

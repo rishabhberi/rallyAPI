@@ -23,6 +23,20 @@ function createHash(username_val, password_val)
 	return "Basic " + hash
 }
 
+function setEventEnter(element)
+{
+	document.onkeydown = function(event)
+	{
+		e = event || window.event
+		keycode = event.which || event.keyCode
+		if(keycode == 13)
+		{
+			element.focus()
+			element.click()
+		}
+	}	
+}
+
 function getToken()
 {
 	if(xhr.readyState == 4)
@@ -36,6 +50,7 @@ function getToken()
 			load.style.display = "none"
 			divForm.style.display = "none"
 			main.style.display = "block"
+			setEventEnter(fetch)
 		}
 		else
 		{
@@ -161,19 +176,6 @@ function displayDetails()
 	}
 }
 
-// function getIterationID()
-// {
-// 	if(xhr.readyState == 4 && xhr.status == 200)
-// 	{
-// 		data = JSON.parse(xhr.response)
-// 		console.log(data)
-// 		iterationURL = data.HierarchicalRequirement.Iteration._ref
-// 		iterationID = iterationURL.split('/')[-1]
-// 		url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID
-
-// 	}
-// }
-
 function fetchIteration()
 {
 	if(xhr.readyState == 4 && xhr.status == 200)
@@ -217,6 +219,34 @@ function fetchTeamMembers()
 	}
 }
 
+function fetchReleases()
+{
+	if(xhr.readyState == 4)
+	{
+		if(xhr.status == 200)
+		{
+			data = JSON.parse(xhr.response)
+			console.log("Releases Fetched")
+			console.log(data)
+			releaseResults = data.QueryResult.Results
+			for (var i = 0; i < releaseResults.length; i++)
+			{
+				option = document.createElement("option")
+				ref = releaseResults[i]._ref
+				temp = ref.split('/')
+				option.value = temp[temp.length-1]
+				option.textContent = releaseResults[i].Name
+				releases.appendChild(option)
+			}
+			load.style.display = "none"
+		}
+		else
+		{
+			alert("Unable to Process Request\nStatus: "+xhr.status)
+		}
+	}
+}
+
 function fetchProject()
 {
 	if(xhr.readyState == 4 && xhr.status == 200)
@@ -230,10 +260,15 @@ function fetchProject()
 			url = projectURL + "/Iterations?pagesize=200"
 			createRequest(url, fetchIteration)
 		}
-		else
+		else if(dropDown.value == "Team Members")
 		{
 			url = projectURL + "/TeamMembers?pagesize=200"
 			createRequest(url, fetchTeamMembers)
+		}
+		else if(dropDown.value == "Releases")
+		{
+			url = projectURL + "/Releases?pagesize=200"
+			createRequest(url, fetchReleases)
 		}
 	}
 }
@@ -272,12 +307,15 @@ function setRequestType()
 	userStoryData.style.display = "none"
 	iframeDiv.style.display = "none"
 	teamMembersDiv.style.display = "none"
+	releaseDataDiv.style.display = "none"
 	e3.style.display = "none"
+	document.onkeydown = null
 
 	if(dropDown.value == "Iteration Name")
 	{
 		teamDiv.style.display = "block"
 		iterationDiv.style.display = "block"
+		releaseDiv.style.display = "none"
 		inputField.style.display = "none"
 		fetch.style.display = "none"
 	}
@@ -285,6 +323,7 @@ function setRequestType()
 	{
 		teamDiv.style.display = "block"
 		iterationDiv.style.display = "none"
+		releaseDiv.style.display = "none"
 		inputField.style.display = "none"
 		fetch.style.display = "none"
 	}
@@ -292,8 +331,18 @@ function setRequestType()
 	{
 		teamDiv.style.display = "none"
 		iterationDiv.style.display = "none"
+		releaseDiv.style.display = "none"
 		inputField.style.display = "inline"
 		fetch.style.display = "inline"
+		setEventEnter(fetch)
+	}
+	else if(dropDown.value == "Releases")
+	{
+		teamDiv.style.display = "block"
+		iterationDiv.style.display = "none"
+		releaseDiv.style.display = "block"
+		inputField.style.display = "none"
+		fetch.style.display = "none"
 	}
 }
 
@@ -307,9 +356,11 @@ function fetchTeamDetails()
 	userStoryData.style.display = "none"
 	iframeDiv.style.display = "none"
 	teamMembersDiv.style.display = "none"
+	releaseDataDiv.style.display = "none"
 	load.style.display = "block"
 
 	iterations.innerHTML = "<option value=\"\"></option>"
+	releases.innerHTML = "<option value=\"\"></option>"
 
 	teamName = team.value
 	urlGetProject = "https://rally1.rallydev.com/slm/webservice/v2.0/project?query=(Name = \"" + teamName + "\")&key=" + window.sessionStorage.securityToken
@@ -329,6 +380,52 @@ function fetchBurndown()
 	teamName = team.value
 	url = "https://rally1.rallydev.com/slm/analytics/reports/4/run?ITERATIONS=" + iterationID + "&TITLE=Iteration+Burndown&SUBTITLE=" + teamName
 	createRequest(url, displayBurndown)
+}
+
+function fetchReleaseDetails()
+{
+	if(xhr.readyState == 4)
+	{
+		if(xhr.status == 200)
+		{
+			data = JSON.parse(xhr.response)
+			console.log("Release Data Fetched")
+			console.log(data)
+			release = data.Release
+
+			document.getElementById("releaseName").textContent = release.Name
+			document.getElementById("releaseTeam").textContent = release.Project._refObjectName
+			document.getElementById("releaseCreationDate").textContent = new Date(release.CreationDate).toDateString()
+			document.getElementById("releaseStartDate").textContent = new Date(release.ReleaseStartDate).toDateString()
+			document.getElementById("releaseEndDate").textContent = new Date(release.ReleaseDate).toDateString()
+			document.getElementById("releaseState").textContent = release.State
+			document.getElementById("releasePlanEstimate").textContent = release.PlanEstimate
+			document.getElementById("releaseAccepted").textContent = release.Accepted
+			document.getElementById("releaseTaskEstimateTotal").textContent = release.TaskEstimateTotal
+			document.getElementById("releaseTaskRemainingTotal").textContent = release.TaskRemainingTotal
+
+			load.style.display = "none"
+			releaseDataDiv.style.display = "block"
+		}
+		else
+		{
+			alert("Unable to Process Request\nStatus: "+xhr.status)
+		}
+	}
+}
+
+function fetchReleaseData()
+{
+	if(releases.value == "")
+	{
+		return
+	}
+
+	load.style.display = "block"
+	releaseDataDiv.style.display = "none"
+	releaseID = releases.value
+	url = "https://rally1.rallydev.com/slm/webservice/v2.0/release/" + releaseID
+	createRequest(url, fetchReleaseDetails)
 }
 
 function init()
@@ -367,21 +464,23 @@ function init()
 	dropDown = document.getElementById("dropDown")
 	dropDown.onchange = setRequestType
 
+	fetch = document.getElementById("fetch")
+	fetch.onclick = fetchDetails
+
 	console.log(window.sessionStorage.securityToken)
 	if(window.sessionStorage.securityToken)
 	{
 		main.style.display = "block"
+		setEventEnter(fetch)
 	}
 	else
 	{
 		divForm.style.display = "block"
+		setEventEnter(submit)
 	}
 
 	inputField = document.getElementById("inputField")
 	inputField.onfocus = removeError
-
-	fetch = document.getElementById("fetch")
-	fetch.onclick = fetchDetails
 
 	userStoryData = document.getElementById("userStoryData")
 	userStoryData.style.display = "none"
@@ -404,6 +503,15 @@ function init()
 
 	iterations = document.getElementById("iterations")
 	iterations.onchange = fetchBurndown
+
+	releaseDiv = document.getElementById("releaseDiv")
+	releaseDiv.style.display = "none"
+
+	releases = document.getElementById("releases")
+	releases.onchange = fetchReleaseData
+
+	releaseDataDiv = document.getElementById("releaseDataDiv")
+	releaseDataDiv.style.display = "none"
 
 	teamMemberh2 = document.getElementById("teamMemberh2")
 }
