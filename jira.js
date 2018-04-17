@@ -314,7 +314,6 @@ function setRequestType()
 	{
 		inputField.style.display = "none"
 		fetch.style.display = "none"
-		// projectSelect.style.display = "block"
 		projectUrl = base_url + "api/2/project"
 		load.style.display = "block"
 		projectIssues.style.display = "block"
@@ -324,6 +323,7 @@ function setRequestType()
 	{
 		inputField.style.display = "inline"
 		inputField.placeholder = dropDown.value
+		issueTableDiv.style.display = "none"
 		fetch.style.display = "inline"
 		projectIssues.style.display = "none"
 		setEventEnter(fetch)
