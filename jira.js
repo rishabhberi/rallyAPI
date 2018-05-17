@@ -434,7 +434,7 @@ function init()
 	load = document.getElementById("load")
 	load.style.display = "none"
 
-	document.getElementById("loadImg").src = "tenor.gif"
+	document.getElementById("loadImg").src = "load.gif"
 
 	divForm = document.getElementById("divForm")
 	divForm.style.display = "none"
